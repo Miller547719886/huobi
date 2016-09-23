@@ -189,29 +189,32 @@ var data = [
 	 		var del = setTimeout(function () {data_index++},answer_order * 800);
 	 		$('.more').bind('click touchend');
 	 	}
- 	}
+ 	};
 
- 	touch.on('.dialogue-box','tap','.js-img',function (e) {
-		// showImg();
-		ele_full_img = '<div class="full-box"><div class="img-full "><img src="' + $(this).attr('src') + '" alt=""></div><div class="close"></div></div>';
-		scroll = $(window).scrollTop();
-		w_h = $(window).height();
-		ap = setTimeout(function () {
-			if ($('.wrap .full-box').length == 0) {
-				wrap.append(ele_full_img);
-				$('.full-box').css({height:w_h,top:scroll});
-			} else {
-				console.log('has a mask');
-			}
-			$('body').addClass('unmovable');
-		},0);
-		// img_full.show();
-		$('body').on('DOMMouseScroll mousescroll touchmove',function (e) {
-			e.preventDefault();
-		});
-		// $('body').addClass('unmovable');
- 	});
-
+ 	function show_full_img () {
+ 		touch.on('.dialogue-box','tap','.js-img',function (e) {
+			// showImg();
+			ele_full_img = '<div class="full-box"><div class="img-full "><img src="' + $(this).attr('src') + '" alt=""></div><div class="close"></div></div>';
+			scroll = $(window).scrollTop();
+			w_h = $(window).height();
+			ap = setTimeout(function () {
+				if ($('.wrap .full-box').length == 0) {
+					wrap.append(ele_full_img);
+					$('.full-box').css({height:w_h,top:scroll});
+				} else {
+					console.log('has a mask');
+				}
+				$('body').addClass('unmovable');
+			},0);
+			// img_full.show();
+			$('body').on('DOMMouseScroll mousescroll touchmove',function (e) {
+				e.preventDefault();
+			});
+			// $('body').addClass('unmovable');
+	 	});
+	};
+	
+	show_full_img();
 
 	touch.on('body','tap','.full-box',function (e) {
 		if (e.target != $('.img-full img').get(0)) {
@@ -231,6 +234,7 @@ var data = [
 
 
 	function add (sender,content) {
+		touch.off('.dialogue-box','tap','.js-img');
 		if (sender == 'pc') {
 			d_box.append(ele_dialogue_pc);
 			$('.dialogue').last().find('.bubble').append(content);
@@ -239,26 +243,7 @@ var data = [
 			$('.dialogue').last().find('.bubble').append(content);
 		} else if (sender == 'answer') {
 			$('.js-container').append(content);
-			touch.on('.dialogue-box','tap','.js-img',function (e) {
-				// showImg();
-				ele_full_img = '<div class="full-box"><div class="img-full "><img src="' + $(this).attr('src') + '" alt=""></div><div class="close"></div></div>';
-				scroll = $(window).scrollTop();
-				w_h = $(window).height();
-				ap = setTimeout(function () {
-					if ($('.wrap .full-box').length == 0) {
-						wrap.append(ele_full_img);
-						$('.full-box').css({height:w_h,top:scroll});
-					} else {
-						console.log('has a mask');
-					}
-					$('body').addClass('unmovable');
-				},0);
-				// img_full.show();
-				$('body').on('DOMMouseScroll mousescroll touchmove',function (e) {
-					e.preventDefault();
-				});
-				// $('body').addClass('unmovable');
-	 		});
+			var tap_after_add = setTimeout(show_full_img,800);
 		} else {
 			console.error('wrong parameter!');
 		}
@@ -268,7 +253,6 @@ var data = [
 		scroll_btm();
 		//给按钮赋予点击事件
 		touch.on('.more','touchend',function (e) {
-			touch.off('.dialogue-box','tap','.js-img');
 			answer_order = 0;
 			type = $(this).attr('data-type');
 			$('.js-footer').remove();
