@@ -1,4 +1,2 @@
-# dialogue
-demo： https://miller547719886.github.io/huobi/
-# huobi
-huobi activity page
+# 预览
+[聊天室](https://miller547719886.github.io/huobi/)
